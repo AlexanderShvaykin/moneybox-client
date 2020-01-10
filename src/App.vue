@@ -11,4 +11,5 @@ export default class App extends Vue {}
 </script>
 
 <style>
+  @import '~bootstrap/dist/css/bootstrap.css';
 </style>
