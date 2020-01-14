@@ -1,9 +1,42 @@
 import Vue from 'vue'
+import VueResource from "vue-resource"
+import VueI18n from 'vue-i18n'
+import Vuelidate from 'vuelidate'
 import App from './App.vue'
+import store from './store'
 import './registerServiceWorker'
+import VueRouter from 'vue-router'
+import router from './routes'
+import messages from './i18n'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.use(VueResource);
+Vue.use(VueRouter);
+Vue.use(VueI18n);
+Vue.use(Vuelidate);
 
-new Vue({
+(Vue as any).http.options.root = 'http://localhost:3000';
+(Vue as any).http.interceptors.push(function(this: Vue, request: any) {
+  const token: string | null = this.$store.state.token;
+  // @ts-ignore
+  if (!this.requireAuth || token) {
+    request.headers.set('Authorization', token);
+  } else {
+    return request.respondWith(JSON.stringify({ error: "Unauthenticated" }), {
+      status: 401,
+      statusText: 'Session token not found'
+    });
+  }
+});
+
+const i18n = new VueI18n({
+  locale: 'ru',
+  messages,
+});
+
+let v = new Vue({
   render: h => h(App),
-}).$mount('#app')
+  store,
+  router,
+  i18n
+}).$mount('#app');
