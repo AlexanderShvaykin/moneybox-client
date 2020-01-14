@@ -8,7 +8,6 @@ import './registerServiceWorker'
 import VueRouter from 'vue-router'
 import router from './routes'
 import messages from './i18n'
-// @ts-ignore
 import configs from './app.config'
 
 Vue.config.productionTip = false;
@@ -17,7 +16,7 @@ Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(Vuelidate);
 
-(Vue as any).http.options.root = configs.host;
+(Vue as any).http.options.root = configs.hostname;
 (Vue as any).http.interceptors.push(function(this: Vue, request: any) {
   const token: string | null = this.$store.state.token;
   // @ts-ignore
