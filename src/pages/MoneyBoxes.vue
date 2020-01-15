@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="form-group pt-3">
-      <label for="name">Moneybox name</label>
-      <input type="text" id="name" class="form-control" v-model="boxName">
-    </div>
+    <form class="pt-4" @submit.prevent="createMoneybox">
+      <div class="form-group">
+        <label for="name">Moneybox name</label>
+        <input type="text" id="name" class="form-control" v-model="boxName">
+      </div>
 
-    <button class="btn btn-success" @click="createMoneybox">Create Moneybox</button>
-    <button class="btn btn-info ml-1" @click="loadMoneyboxes">Load Moneybox</button>
+      <button class="btn btn-success">Create Moneybox</button>
+    </form>
 
     <ul class="list-group mt-3">
       <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.name }}</li>
@@ -22,27 +23,36 @@
   @Component
 
   export default class MoneyBoxesPage extends Mixins(Authorized) {
-      moneyboxes: object[] = [];
-      private boxName: string = '';
-      private resource!: ResourceMethods;
-      createMoneybox(): void {
-        const box = { name: this.boxName };
-        this.resource.save({}, box).then(null, response => {
-          response.json().then((errorMsg: object) => console.error(errorMsg))
-        })
-      }
-      loadMoneyboxes(): void {
-        this.resource.get()
-          .then(response => {
-            response.json().then((resp: object[]) => this.moneyboxes = resp)
-          }, response => {
-            response.json().then((errorMsg: object) => console.error(errorMsg))
-          })
-      }
-      registerResource(): void {
-        this.resource = this.$resource("api/moneyboxes");
-      }
+    moneyboxes: object[] = [];
+    private boxName: string = '';
+    private resource!: ResourceMethods;
+    createMoneybox(): void {
+      const box = { name: this.boxName };
+      this.resource.save({}, box).then(
+        response => response.json().then(this.addBoxHandler), this.errorHandler
+      )
     }
+
+    loadMoneyboxes(): void {
+      this.resource.get()
+        .then(response => {
+          response.json().then((resp: object[]) => this.moneyboxes = resp)
+        }, this.errorHandler)
+    }
+
+    addBoxHandler(data: object): void {
+      this.boxName = "";
+      this.moneyboxes.push(data);
+    }
+
+    registerResource(): void {
+      this.resource = this.$resource("api/moneyboxes");
+    }
+
+    mounted(): void {
+      this.loadMoneyboxes()
+    }
+  }
 </script>
 
 <style scoped>
