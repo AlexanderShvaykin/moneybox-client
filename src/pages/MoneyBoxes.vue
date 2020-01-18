@@ -10,7 +10,7 @@
     </form>
 
     <ul class="list-group mt-3">
-      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.name }}</li>
+      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>
     </ul>
   </div>
 </template>
@@ -36,13 +36,13 @@
     loadMoneyboxes(): void {
       this.resource.get()
         .then(response => {
-          response.json().then((resp: object[]) => this.moneyboxes = resp)
+          response.json().then((resp: { data: object[] }) => this.moneyboxes = resp["data"])
         }, this.errorHandler)
     }
 
-    addBoxHandler(data: object): void {
+    addBoxHandler(response: { data: object }): void {
       this.boxName = "";
-      this.moneyboxes.push(data);
+      this.moneyboxes.push(response["data"]);
     }
 
     registerResource(): void {

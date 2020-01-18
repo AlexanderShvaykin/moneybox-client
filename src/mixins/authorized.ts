@@ -10,9 +10,8 @@ export default class Authorized extends Mixins(WithCurrentUser) {
   getMe(): void {
     this.$http.get('api/users/me')
       .then(response => {
-        response.json().then((user: CurrentUser) => {
-          const currentUser: CurrentUser = {id: user.id, email: user.email };
-          this.$store.commit('setUser', currentUser)
+        response.json().then((response: { data: CurrentUser }) => {
+          this.$store.commit('setUser', response.data)
         })
       }, this.errorHandler);
   }

@@ -12,6 +12,13 @@ export default new Vuex.Store({
     current_user: userType,
     errors: errorsType
   },
+  getters: {
+    uniqErrors(state) {
+      return state.errors.filter((value: any, index: any) => {
+        return state.errors.indexOf(value) === index;
+      })
+    }
+  },
   mutations: {
     setUser(state, user: CurrentUser | {}) {
       state.current_user = user
