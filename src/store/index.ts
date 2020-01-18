@@ -26,6 +26,9 @@ export default new Vuex.Store({
     addError(state, error: string) {
       state.errors.push(error)
     },
+    addErrors(state, errors: string[]) {
+      state.errors = state.errors.concat(errors)
+    },
     clearErrors(state) {
       state.errors = []
     },
