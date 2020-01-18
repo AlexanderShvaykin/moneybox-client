@@ -24,7 +24,7 @@
   @Component
   export default class App extends Mixins(WithCurrentUser) {
     errors(): object[] | null {
-      let errs = this.$store.state.errors;
+      const errs = this.$store.getters.uniqErrors;
       if (errs.length == 0) {
         return null
       } else {
