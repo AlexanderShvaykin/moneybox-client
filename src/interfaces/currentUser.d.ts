@@ -1,1 +1,7 @@
-export default interface CurrentUser { id: number, email: string }
+export default interface CurrentUser {
+  id: number,
+  attributes: {
+    email: string,
+    name: string
+  }
+}
