@@ -10,7 +10,17 @@
     </form>
 
     <ul class="list-group mt-3">
-      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>
+      <router-link
+          tag="li"
+          v-for="box of moneyboxes"
+          :key="box.id"
+          :to="'/moneyboxes/' + box.id"
+          class="list-group-item"
+      >
+        {{ box.attributes.name }}
+
+      </router-link>
+<!--      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>-->
     </ul>
   </div>
 </template>
