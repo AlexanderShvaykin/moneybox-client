@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div v-if="currentUser()">
-      <ul class="nav justify-content-end">
+      <ul class="nav justify-content-end pt-2 pb-1">
         <li class="nav-item">
-          <button class="btn"  @click="logout">{{$t('app.logout')}}</button>
+          <button class="btn btn-dark"  @click="logout">{{$t('app.logout')}}</button>
         </li>
       </ul>
     </div>
