@@ -39,25 +39,30 @@
         v-if="displayForm"
     >
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <form action="#">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <MonthPicker v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
+                <MonthPicker v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  @click="hideForm()"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
           </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                @click="hideForm()"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -69,8 +74,13 @@
   import Authorized from "@/mixins/authorized";
   import Box from "@/interfaces/moneyBox";
   import FinanceGoal from "@/interfaces/financeGoal";
+  import MonthPicker from "@/components/MonthPicker.vue";
 
-  @Component
+  @Component({
+    components: {
+      MonthPicker
+    }
+  })
 
   export default class MoneyBoxPage extends Mixins(Authorized) {
     private resource!: ResourceMethods;
@@ -79,6 +89,8 @@
     goals!: FinanceGoal[];
     loaded: Boolean = false;
     displayForm: Boolean = false;
+    startedAt: number = Date.now();
+    finishedAt: number = Date.now();
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })
