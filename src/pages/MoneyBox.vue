@@ -1,7 +1,13 @@
 <template>
-  <div>
+  <div v-if="loaded">
     <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
-    <h2>{{ name }}</h2>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
+      </div>
+      <div class="col-1"></div>
+    </div>
   </div>
 </template>
 
@@ -16,13 +22,15 @@
   export default class MoneyBoxPage extends Mixins(Authorized) {
     private resource!: ResourceMethods;
     private boxId!: string;
-    name: string = "";
+    box!: Box;
+    loaded: Boolean = false;
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })
         .then(response => {
           response.json().then((resp: { data: Box }) => {
-            this.name = resp["data"].attributes.name
+            this.box = resp.data;
+            this.loaded = true
           })
         }, this.errorHandler)
     }
