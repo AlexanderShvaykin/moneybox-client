@@ -6,19 +6,19 @@
 
 <script lang="ts">
   import { Component, Mixins } from 'vue-property-decorator';
-  // import { ResourceMethods } from 'vue-resource/types/vue_resource';
+  import { ResourceMethods } from 'vue-resource/types/vue_resource';
   import Authorized from "@/mixins/authorized";
   import Box from "@/interfaces/moneyBox";
 
   @Component
 
   export default class MoneyBoxPage extends Mixins(Authorized) {
-    // private resource!: ResourceMethods;
+    private resource!: ResourceMethods;
     private boxId!: string;
     name: string = "";
 
     loadMoneybox(): void {
-      this.$http.get("api/moneyboxes/" + this.boxId)
+      this.resource.get({ id: this.boxId })
         .then(response => {
           response.json().then((resp: { data: Box }) => {
             this.name = resp["data"].attributes.name
@@ -27,11 +27,11 @@
     }
 
     registerResource(): void {
-      // this.resource = this.$resource("api/moneyboxes/:id");
+      this.resource = this.$resource("api/moneyboxes{/id}");
     }
 
     mounted(): void {
-      this.boxId = this.$router.currentRoute.params['id']
+      this.boxId = this.$router.currentRoute.params['id'];
       this.loadMoneybox();
     }
   }
