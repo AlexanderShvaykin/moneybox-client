@@ -3,7 +3,8 @@ import {required} from "vuelidate/lib/validators";
 export default {
   ru: {
     app: {
-      logout: "Выход"
+      logout: "Выход",
+      back: "Назад"
     },
     message: {
       hello: 'Привет {email}'

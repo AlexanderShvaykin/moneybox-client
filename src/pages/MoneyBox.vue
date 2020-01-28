@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
     <h2>{{ name }}</h2>
   </div>
 </template>
