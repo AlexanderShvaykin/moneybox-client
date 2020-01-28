@@ -1,6 +1,7 @@
 <template>
   <div v-if="loaded">
     <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
+    <button class="btn btn-light ml-1" @click="showForm()">Add</button>
     <div class="row">
       <div class="col-1"></div>
       <div class="col-10">
@@ -28,6 +29,37 @@
       </div>
       <div class="col-1"></div>
     </div>
+    <div
+        class="modal fade show"
+        ref="addGoal"
+        tabindex="-1"
+        role="dialog"
+        aria-hidden="false"
+        style="display: block"
+        v-if="displayForm"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                @click="hideForm()"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,6 +78,7 @@
     box!: Box;
     goals!: FinanceGoal[];
     loaded: Boolean = false;
+    displayForm: Boolean = false;
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })
@@ -66,6 +99,14 @@
             this.loaded = true
           })
         }, this.errorHandler)
+    }
+
+    showForm(): void {
+      this.displayForm = true
+    }
+
+    hideForm(): void {
+      this.displayForm = false
     }
 
     registerResource(): void {
