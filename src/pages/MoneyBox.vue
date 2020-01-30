@@ -1,7 +1,7 @@
 <template>
   <div v-if="loaded">
     <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
-    <button class="btn btn-light ml-1" @click="showForm()">Add</button>
+    <button class="btn btn-light ml-1" @click="toggleForm()">Add</button>
     <div class="row">
       <div class="col-1"></div>
       <div class="col-10">
@@ -29,42 +29,7 @@
       </div>
       <div class="col-1"></div>
     </div>
-    <div
-        class="modal fade show"
-        ref="addGoal"
-        tabindex="-1"
-        role="dialog"
-        aria-hidden="false"
-        style="display: block"
-        v-if="displayForm"
-    >
-      <div class="modal-dialog" role="document">
-        <form action="#">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <MonthPicker v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
-                <MonthPicker v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                  @click="hideForm()"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+    <ModalForm v-if="displayForm" v-on:closeForm="displayForm = false" :haveCloseForm="true"/>
   </div>
 </template>
 
@@ -75,10 +40,12 @@
   import Box from "@/interfaces/moneyBox";
   import FinanceGoal from "@/interfaces/financeGoal";
   import MonthPicker from "@/components/MonthPicker.vue";
+  import ModalForm from "@/components/ModalForm.vue";
 
   @Component({
     components: {
-      MonthPicker
+      MonthPicker,
+      ModalForm
     }
   })
 
@@ -89,8 +56,8 @@
     goals!: FinanceGoal[];
     loaded: Boolean = false;
     displayForm: Boolean = false;
-    startedAt: number = Date.now();
-    finishedAt: number = Date.now();
+    // startedAt: number = Date.now();
+    // finishedAt: number = Date.now();
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })
@@ -113,12 +80,8 @@
         }, this.errorHandler)
     }
 
-    showForm(): void {
-      this.displayForm = true
-    }
-
-    hideForm(): void {
-      this.displayForm = false
+    toggleForm(flag: boolean = true): void {
+      this.displayForm = flag
     }
 
     registerResource(): void {
