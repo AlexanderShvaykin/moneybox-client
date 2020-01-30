@@ -16,6 +16,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
+  import Tz from "@/tz"
 
   @Component
 
@@ -51,7 +52,7 @@
       if (isNaN(result)) {
         this.inputValue = this.initValue;
       }
-      return Date.parse(this.inputValue)
+      return Tz.withOffset(Date.parse(this.inputValue) / 1000)
     }
     emitValue(): void {
       this.$emit("input", this.convertValue())

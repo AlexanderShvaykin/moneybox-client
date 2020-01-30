@@ -52,6 +52,7 @@
   import FinanceGoal from "@/interfaces/financeGoal";
   import DateInput from "@/components/DateInput.vue";
   import ModalForm from "@/components/ModalForm.vue";
+  import Tz from "@/tz"
 
   @Component({
     components: {
@@ -67,8 +68,8 @@
     goals!: FinanceGoal[];
     loaded: Boolean = false;
     displayForm: Boolean = false;
-    startedAt: number = Date.now();
-    finishedAt: number = Date.now();
+    startedAt: number = Tz.current();
+    finishedAt: number = Tz.current();
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })
