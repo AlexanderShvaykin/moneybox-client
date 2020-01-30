@@ -58,12 +58,14 @@
     }
     debounce(func: (this: Vue) => void, delay: number): () => void {
       let inDebounce: number | undefined;
-      console.log(inDebounce);
       return function(this: Vue) {
         const context: Vue = this;
         clearTimeout(inDebounce);
         inDebounce = setTimeout(() => func.apply(context), delay)
       }
+    }
+    created() {
+      this.$emit("input", this.convertValue())
     }
   }
 </script>
