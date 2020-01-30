@@ -8,7 +8,7 @@
       style="display: block"
   >
     <div class="modal-dialog" role="document">
-      <form action="#">
+      <form @submit.prevent="onSubmit">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
@@ -48,6 +48,9 @@
     @Prop() private closeText!: string;
     closeForm(): void {
       this.$emit("closeForm")
+    }
+    onSubmit(): void {
+      this.$emit("onSubmit")
     }
   }
 </script>

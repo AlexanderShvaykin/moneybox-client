@@ -1,7 +1,5 @@
 <template>
   <div v-if="loaded">
-    <h1>{{ startedAt }}</h1>
-    <h1>{{ finishedAt }}</h1>
     <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
     <button class="btn btn-light ml-1" @click="toggleForm()">Add</button>
     <div class="row">
@@ -38,6 +36,7 @@
         title="Title"
         saveText="Sohranit"
         closeText="Zakrit"
+        v-on:onSubmit="createGoal()"
     >
       <DateInput v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
       <DateInput v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
@@ -94,6 +93,10 @@
 
     toggleForm(flag: boolean = true): void {
       this.displayForm = flag
+    }
+
+    createGoal(): void {
+      console.log({startedAt: this.startedAt, finishedAt: this.finishedAt})
     }
 
     registerResource(): void {
