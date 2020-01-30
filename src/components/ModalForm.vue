@@ -11,12 +11,11 @@
       <form action="#">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
           </div>
           <div class="modal-body">
             <div class="form-group">
-<!--              <MonthPicker v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>-->
-<!--              <MonthPicker v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>-->
+              <slot></slot>
             </div>
           </div>
           <div class="modal-footer">
@@ -27,9 +26,9 @@
                 @click="closeForm"
                 v-if="haveCloseForm"
             >
-              Close
+              {{ closeText }}
             </button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">{{ saveText }}</button>
           </div>
         </div>
       </form>
@@ -44,6 +43,9 @@
 
   export default class ModalForm extends Vue {
     @Prop() private haveCloseForm!: boolean;
+    @Prop() private title!: string;
+    @Prop() private saveText!: string;
+    @Prop() private closeText!: string;
     closeForm(): void {
       this.$emit("closeForm")
     }

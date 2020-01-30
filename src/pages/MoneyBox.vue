@@ -1,5 +1,7 @@
 <template>
   <div v-if="loaded">
+    <h1>{{ startedAt }}</h1>
+    <h1>{{ finishedAt }}</h1>
     <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
     <button class="btn btn-light ml-1" @click="toggleForm()">Add</button>
     <div class="row">
@@ -29,7 +31,17 @@
       </div>
       <div class="col-1"></div>
     </div>
-    <ModalForm v-if="displayForm" v-on:closeForm="displayForm = false" :haveCloseForm="true"/>
+    <ModalForm
+        v-if="displayForm"
+        v-on:closeForm="displayForm = false"
+        :haveCloseForm="true"
+        title="Title"
+        saveText="Sohranit"
+        closeText="Zakrit"
+    >
+      <DateInput v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
+      <DateInput v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
+    </ModalForm>
   </div>
 </template>
 
@@ -39,12 +51,12 @@
   import Authorized from "@/mixins/authorized";
   import Box from "@/interfaces/moneyBox";
   import FinanceGoal from "@/interfaces/financeGoal";
-  import MonthPicker from "@/components/MonthPicker.vue";
+  import DateInput from "@/components/DateInput.vue";
   import ModalForm from "@/components/ModalForm.vue";
 
   @Component({
     components: {
-      MonthPicker,
+      DateInput,
       ModalForm
     }
   })
@@ -56,8 +68,8 @@
     goals!: FinanceGoal[];
     loaded: Boolean = false;
     displayForm: Boolean = false;
-    // startedAt: number = Date.now();
-    // finishedAt: number = Date.now();
+    startedAt: number = Date.now();
+    finishedAt: number = Date.now();
 
     loadMoneybox(): void {
       this.resource.get({ id: this.boxId })

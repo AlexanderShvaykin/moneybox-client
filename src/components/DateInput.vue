@@ -19,7 +19,7 @@
 
   @Component
 
-  export default class MonthPicker extends Vue {
+  export default class DateInput extends Vue {
     @Prop() private elId!: string;
     @Prop() private label!: string;
     @Prop() private cssClass!: string;
