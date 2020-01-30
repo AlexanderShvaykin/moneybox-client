@@ -96,11 +96,21 @@
     }
 
     createGoal(): void {
-      console.log({startedAt: this.startedAt, finishedAt: this.finishedAt})
+      const params = { started_at: this.startedAt, finished_at: this.finishedAt };
+
+      // @ts-ignore
+      this.resource.createGoal({id: this.boxId}, params).then((response: Response) => {
+        response.json().then((resp: { data: FinanceGoal }) => {
+          this.goals.push(resp.data);
+          this.toggleForm(false)
+        })
+      }, this.errorHandler)
     }
 
     registerResource(): void {
-      this.resource = this.$resource("api/moneyboxes{/id}");
+      this.resource = this.$resource("api/moneyboxes{/id}", {}, {
+        createGoal: { method: 'POST', url: "api/moneyboxes{/id}/finance_goals"}
+      });
     }
 
     mounted(): void {
