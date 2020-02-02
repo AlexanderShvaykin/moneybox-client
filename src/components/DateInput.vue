@@ -25,7 +25,7 @@
     @Prop() private label!: string;
     @Prop() private cssClass!: string;
     @Prop() private day!: string;
-    readonly initValue: string = this.formatDate(this.initDate());
+    readonly initValue: string = Helper.formatDate(this.initDate());
     inputValue: string = this.initValue;
 
     handleInput(): void {
@@ -49,31 +49,12 @@
       return new Date(year, month, day)
     }
 
-    formatDate(date: Date): string {
-      const month = date.getMonth() + 1;
-      let inputMonth: string;
-      if (month < 10) {
-        inputMonth = "0" + month
-      } else {
-        inputMonth = String(month)
-      }
-
-      const day = date.getDate();
-      let inputDay: string;
-      if (day < 10) {
-        inputDay = "0" + day
-      } else {
-        inputDay = String(day)
-      }
-
-      return date.getFullYear() + "-" + inputMonth + "-" + inputDay
-    }
     convertValue(): string {
       const result: any = Date.parse(this.inputValue);
       if (isNaN(result)) {
         this.inputValue = this.initValue;
       }
-      this.inputValue = this.formatDate(new Date(this.inputValue));
+      this.inputValue = Helper.formatDate(new Date(this.inputValue));
       return this.inputValue
     }
 

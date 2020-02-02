@@ -3,8 +3,8 @@ export default interface FinanceGoal {
   attributes: {
     paymentAmount: number,
     incomeAmount: number,
-    startedAt: number,
-    finishedAt: number,
+    startedAt: string,
+    finishedAt: string,
     monthNumber: number
   }
 }

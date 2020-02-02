@@ -21,8 +21,8 @@
               <th scope="row">{{ goal.attributes.monthNumber }}</th>
               <td>{{ goal.attributes.paymentAmount }}</td>
               <td>{{ goal.attributes.incomeAmount }}</td>
-              <td>{{ goal.attributes.startedAt }}</td>
-              <td>{{ goal.attributes.finishedAt }}</td>
+              <td>{{ goal.attributes.startedAt | timeFormat }}</td>
+              <td>{{ goal.attributes.finishedAt | timeFormat }}</td>
             </tr>
           </tbody>
         </table>
@@ -52,11 +52,22 @@
   import FinanceGoal from "@/interfaces/financeGoal";
   import DateInput from "@/components/DateInput.vue";
   import ModalForm from "@/components/ModalForm.vue";
+  import Helper from '@/helpers'
 
   @Component({
     components: {
       DateInput,
       ModalForm
+    },
+    filters: {
+      timeFormat(value: string): string {
+        const result: any = Date.parse(value);
+        if (isNaN(result)) {
+          return  ""
+        } else {
+          return Helper.formatDate(new Date(value))
+        }
+      }
     }
   })
 
