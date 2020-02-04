@@ -35,8 +35,6 @@
         v-on:closeForm="displayForm = false"
         :haveCloseForm="true"
         title="Title"
-        saveText="Sohranit"
-        closeText="Zakrit"
         v-on:onSubmit="createGoal()"
     >
       <DateInput v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>

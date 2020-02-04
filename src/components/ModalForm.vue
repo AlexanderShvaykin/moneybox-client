@@ -25,10 +25,10 @@
                 data-dismiss="modal"
                 @click="closeForm"
                 v-if="haveCloseForm"
+                v-html="svg.icons.x.toSvg()"
             >
-              {{ closeText }}
             </button>
-            <button type="submit" class="btn btn-primary">{{ saveText }}</button>
+            <button type="submit" class="btn btn-primary" v-html="svg.icons.save.toSvg()"></button>
           </div>
         </div>
       </form>
@@ -38,6 +38,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
+  const feather = require('feather-icons');
 
   @Component
 
@@ -46,11 +47,15 @@
     @Prop() private title!: string;
     @Prop() private saveText!: string;
     @Prop() private closeText!: string;
+    private svg!: object;
     closeForm(): void {
       this.$emit("closeForm")
     }
     onSubmit(): void {
       this.$emit("onSubmit")
+    }
+    beforeCreate(): void {
+      this.svg = feather
     }
   }
 </script>
