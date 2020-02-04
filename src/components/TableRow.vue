@@ -5,6 +5,7 @@
           type="text"
           :value="column.value"
           v-if="column.editable"
+          @input="debounceEmit(column.key, $event.target.value)"
       >
       <div v-else>{{ column.value }}</div>
     </td>
@@ -20,15 +21,23 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
+  import Helper from '@/helpers'
   const feather = require('feather-icons');
 
   @Component
   export default class TableRow extends Vue {
     @Prop() private columns!: {value: string, editable: boolean}[];
     @Prop() private customRemoveText!: string;
+    debounceEmit = Helper.debounce(this.emitValue, 1000);
 
     removeText(): any {
       return feather.icons.x.toSvg()
+    }
+
+    emitValue(key: string, value: string): void {
+      if (key) {
+        this.$emit("changeRow", {key, value});
+      }
     }
   }
 </script>

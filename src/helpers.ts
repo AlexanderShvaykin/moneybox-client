@@ -1,12 +1,9 @@
+const throttle = require('lodash.throttle');
+const debounce = require('lodash.debounce');
+
 export default {
-  debounce(func: () => void, delay: number): () => void {
-    let inDebounce: number | undefined;
-    return function(this: any) {
-      const context = this;
-      clearTimeout(inDebounce);
-      inDebounce = setTimeout(() => func.apply(context), delay)
-    }
-  },
+  debounce,
+  throttle,
   formatDate(date: Date): string {
     const month = date.getMonth() + 1;
     let inputMonth: string;
