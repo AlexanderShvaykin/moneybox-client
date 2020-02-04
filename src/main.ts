@@ -7,7 +7,8 @@ import store from './store'
 import './registerServiceWorker'
 import VueRouter from 'vue-router'
 import router from './routes'
-import messages from './i18n'
+import messages from '@/locales/messages'
+import dateTimeFormats from '@/locales/dateTimeFormats'
 import configs from './app.config'
 
 Vue.config.productionTip = false;
@@ -33,6 +34,7 @@ Vue.use(Vuelidate);
 const i18n = new VueI18n({
   locale: 'ru',
   messages,
+  dateTimeFormats
 });
 
 let v = new Vue({

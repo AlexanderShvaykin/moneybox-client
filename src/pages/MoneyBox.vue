@@ -55,7 +55,6 @@
   import DateInput from "@/components/DateInput.vue";
   import ModalForm from "@/components/ModalForm.vue";
   import TableRow from "@/components/TableRow.vue";
-  import Helper from '@/helpers'
 
   @Component({
     components: {
@@ -100,7 +99,7 @@
       if (isNaN(result)) {
         return  ""
       } else {
-        return Helper.formatDate(new Date(value))
+        return this.$d(new Date(), 'short')
       }
     }
 

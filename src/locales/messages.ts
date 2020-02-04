@@ -1,7 +1,5 @@
-import {required} from "vuelidate/lib/validators";
-
 export default {
-  ru: {
+  'ru': {
     app: {
       logout: "Выход",
       back: "Назад"
