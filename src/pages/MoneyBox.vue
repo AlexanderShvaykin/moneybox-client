@@ -6,7 +6,7 @@
       <div class="col-1"></div>
       <div class="col-10">
         <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
-        <table class="table">
+        <table is="Table" class="mt-3">
           <thead>
             <tr>
               <th scope="col">month</th>
@@ -14,7 +14,6 @@
               <th scope="col">income_amount</th>
               <th scope="col">started_at</th>
               <th scope="col">finished_at</th>
-              <th scope="col"></th>
             </tr>
           </thead>
           <tbody v-if="goals.length > 0">
@@ -54,13 +53,15 @@
   import FinanceGoal from "@/interfaces/financeGoal";
   import DateInput from "@/components/DateInput.vue";
   import ModalForm from "@/components/ModalForm.vue";
+  import Table from "@/components/Table.vue";
   import TableRow from "@/components/TableRow.vue";
 
   @Component({
     components: {
       DateInput,
       ModalForm,
-      TableRow
+      TableRow,
+      Table
     },
     data() {
       return {
@@ -83,11 +84,11 @@
     goalColumns(goal: FinanceGoal | undefined): any[] {
       if (goal) {
         return [
-          goal.attributes.monthNumber,
-          goal.attributes.paymentAmount,
-          goal.attributes.incomeAmount,
-          this.timeFormat(goal.attributes.startedAt),
-          this.timeFormat(goal.attributes.finishedAt)
+          {value: goal.attributes.monthNumber},
+          {value: goal.attributes.paymentAmount, editable: true},
+          {value: goal.attributes.incomeAmount, editable: true},
+          {value: this.timeFormat(goal.attributes.startedAt)},
+          {value: this.timeFormat(goal.attributes.finishedAt)}
         ]
       } else {
         return []
