@@ -21,9 +21,9 @@
             <tr
                 is="TableRow"
                 v-for="(goal, index) in goals"
-                :key="index"
+                :key="goal.id"
                 :columns="goalColumns(goal)"
-                :remove="goals.splice(index, 1)"
+                @remove="removeGoal(goal.id, index)"
             >
             </tr>
           </tbody>
@@ -62,6 +62,11 @@
       DateInput,
       ModalForm,
       TableRow
+    },
+    data() {
+      return {
+        goals: []
+      }
     }
   })
 
@@ -120,8 +125,13 @@
         }, this.errorHandler)
     }
 
+    removeGoal(id: number, index: number): void {
+      this.goalResource.delete({id: id}).then(() => {
+        this.goals.splice(index, 1)
+      })
+    }
+
     toggleForm(flag: boolean = true): void {
-      console.log(this.goals )
       this.displayForm = flag
     }
 
