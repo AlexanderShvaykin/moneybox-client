@@ -20,7 +20,6 @@
         {{ box.attributes.name }}
 
       </router-link>
-<!--      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>-->
     </div>
   </div>
 </template>
