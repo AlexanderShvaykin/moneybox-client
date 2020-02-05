@@ -8,30 +8,34 @@
           @input="debounceEmit(column.key, $event.target.value)"
       >
     </td>
-    <td>
-      <button
-          @click="$emit('remove')"
-          class="btn btn-outline-danger btn-sm ml-1 mr-1"
-          v-html="removeText()"
-      ></button>
-    </td>
+    <slot name="actions"></slot>
+    <slot name="remove">
+      <td>
+        <button
+            @click="$emit('remove')"
+            class="btn btn-outline-danger btn-sm ml-1 mr-1"
+        >
+          <Icon name="trash-2"></Icon>
+        </button>
+      </td>
+    </slot>
   </tr>
 </template>
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
   import Helper from '@/helpers'
-  const feather = require('feather-icons');
+  import Icon from "@/components/Icon.vue"
 
-  @Component
+  @Component({
+    components: {
+      Icon
+    }
+  })
   export default class TableRow extends Vue {
     @Prop() private columns!: {value: string, editable: boolean}[];
     @Prop() private customRemoveText!: string;
     debounceEmit = Helper.debounce(this.emitValue, 1000);
-
-    removeText(): any {
-      return feather.icons.x.toSvg()
-    }
 
     emitValue(key: string, value: string): void {
       if (key) {
