@@ -8,11 +8,11 @@
         <table is="Table" class="mt-3">
           <thead>
             <tr>
-              <th scope="col">month</th>
-              <th scope="col">payment_amount</th>
-              <th scope="col">income_amount</th>
-              <th scope="col">started_at</th>
-              <th scope="col">finished_at</th>
+              <th scope="col">{{$t('goal.month')}}</th>
+              <th scope="col">{{$t('goal.paymentAmount')}}</th>
+              <th scope="col">{{$t('goal.incomeAmount')}}</th>
+              <th scope="col">{{$t('goal.startedAt')}}</th>
+              <th scope="col">{{$t('goal.finishedAt')}}</th>
             </tr>
           </thead>
           <tbody v-if="goals.length > 0">
