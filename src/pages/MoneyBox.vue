@@ -22,6 +22,7 @@
                 :key="goal.id"
                 :columns="goalColumns(goal)"
                 @remove="removeGoal(goal.id, index)"
+                @changeRow="updateGoal($event, goal.id)"
             >
             </tr>
           </tbody>
@@ -81,12 +82,22 @@
     startedAt: string = "";
     finishedAt: string = "";
 
+    updateGoal(changes: {key: string, value: string}, id: number): void {
+      let goal = this.goals.find(e => e.id === id);
+      if (goal) {
+        this.$set(goal.attributes, changes.key, changes.value);
+        this.goalResource.update(
+          {id: id}, goal.attributes
+        ).then(() => {}, this.errorHandler)
+      }
+    }
+
     goalColumns(goal: FinanceGoal | undefined): any[] {
       if (goal) {
         return [
           {value: goal.attributes.monthNumber},
-          {value: goal.attributes.paymentAmount, editable: true},
-          {value: goal.attributes.incomeAmount, editable: true},
+          {value: goal.attributes.paymentAmount, editable: true, key: "paymentAmount"},
+          {value: goal.attributes.incomeAmount, editable: true, key: "incomeAmount"},
           {value: this.timeFormat(goal.attributes.startedAt)},
           {value: this.timeFormat(goal.attributes.finishedAt)}
         ]
