@@ -18,6 +18,13 @@ export default {
     validations: {
       required: "Поле обязательное для заполнения",
       email: "Не валидный email"
+    },
+    goal: {
+      month: "N",
+      paymentAmount: "Запланировано расходов всего",
+      incomeAmount: "Запланировано послуплений всего",
+      startedAt: "Дата начала",
+      finishedAt: "Дата конца"
     }
   }
 }

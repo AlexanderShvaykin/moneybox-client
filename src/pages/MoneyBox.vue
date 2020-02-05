@@ -8,11 +8,11 @@
         <table is="Table" class="mt-3">
           <thead>
             <tr>
-              <th scope="col">month</th>
-              <th scope="col">payment_amount</th>
-              <th scope="col">income_amount</th>
-              <th scope="col">started_at</th>
-              <th scope="col">finished_at</th>
+              <th scope="col">{{$t('goal.month')}}</th>
+              <th scope="col">{{$t('goal.paymentAmount')}}</th>
+              <th scope="col">{{$t('goal.incomeAmount')}}</th>
+              <th scope="col">{{$t('goal.startedAt')}}</th>
+              <th scope="col">{{$t('goal.finishedAt')}}</th>
             </tr>
           </thead>
           <tbody v-if="goals.length > 0">
@@ -96,7 +96,7 @@
       if (goal) {
         return [
           {value: goal.attributes.monthNumber},
-          {value: goal.attributes.paymentAmount, editable: true, key: "paymentAmount"},
+          {value: goal.attributes.paymentAmount},
           {value: goal.attributes.incomeAmount, editable: true, key: "incomeAmount"},
           {value: this.timeFormat(goal.attributes.startedAt)},
           {value: this.timeFormat(goal.attributes.finishedAt)}
@@ -111,7 +111,7 @@
       if (isNaN(result)) {
         return  ""
       } else {
-        return this.$d(new Date(), 'short')
+        return this.$d(new Date(value), 'short')
       }
     }
 
@@ -177,5 +177,9 @@
 </script>
 
 <style scoped>
+  h5 {
+    background-color: var(--header-color);
+    text-transform: uppercase;
+  }
 
 </style>

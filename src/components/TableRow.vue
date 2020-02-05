@@ -4,15 +4,14 @@
       <input
           type="text"
           :value="column.value"
-          v-if="column.editable"
+          :disabled="!column.editable"
           @input="debounceEmit(column.key, $event.target.value)"
       >
-      <div v-else>{{ column.value }}</div>
     </td>
     <td>
       <button
           @click="$emit('remove')"
-          class="btn btn-outline-danger"
+          class="btn btn-outline-danger btn-sm ml-1 mr-1"
           v-html="removeText()"
       ></button>
     </td>
@@ -43,7 +42,7 @@
 </script>
 
 <style scoped>
-  td input, div {
+  td input {
     border:none;
     width:100%;
     height:100%;
@@ -56,6 +55,11 @@
   td input:focus {
     border:2px solid #5292F7;
     outline: none;
+  }
+
+  input[type="text"]:disabled {
+    background-color: var(--table-color);
+    color: black;
   }
 
   td {

@@ -15,8 +15,8 @@
 <style scoped>
   table {
     width: 100%;
-    background: #fff none repeat scroll 0 0;
     border: 1px solid #000;
+    background-color: var(--table-color);
   }
 
   table th, td {
