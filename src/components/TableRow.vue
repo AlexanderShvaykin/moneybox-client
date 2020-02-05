@@ -8,14 +8,17 @@
           @input="debounceEmit(column.key, $event.target.value)"
       >
     </td>
-    <td>
-      <button
-          @click="$emit('remove')"
-          class="btn btn-outline-danger btn-sm ml-1 mr-1"
-      >
-        <Icon name="trash-2"></Icon>
-      </button>
-    </td>
+    <slot name="actions"></slot>
+    <slot name="remove">
+      <td>
+        <button
+            @click="$emit('remove')"
+            class="btn btn-outline-danger btn-sm ml-1 mr-1"
+        >
+          <Icon name="trash-2"></Icon>
+        </button>
+      </td>
+    </slot>
   </tr>
 </template>
 
