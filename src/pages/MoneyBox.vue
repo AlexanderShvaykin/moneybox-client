@@ -27,7 +27,9 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn btn-primary mt-3 float-right" @click="toggleForm()" v-html="svg.icons.plus.toSvg()"></button>
+        <button class="btn btn-primary mt-3 float-right" @click="toggleForm()">
+          <Icon name="plus"></Icon>
+        </button>
       </div>
       <div class="col-1"></div>
     </div>
@@ -54,14 +56,15 @@
   import ModalForm from "@/components/ModalForm.vue";
   import Table from "@/components/Table.vue";
   import TableRow from "@/components/TableRow.vue";
-  const feather = require('feather-icons');
+  import Icon from "@/components/Icon.vue";
 
   @Component({
     components: {
       DateInput,
       ModalForm,
       TableRow,
-      Table
+      Table,
+      Icon
     },
     data() {
       return {
@@ -163,10 +166,6 @@
         createGoal: { method: 'POST', url: "api/moneyboxes{/id}/finance_goals"}
       });
       this.goalResource = this.$resource("api/finance_goals{/id}");
-    }
-
-    beforeCreate(): void {
-      this.svg = feather
     }
 
     mounted(): void {
