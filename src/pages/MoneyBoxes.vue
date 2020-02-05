@@ -9,9 +9,19 @@
       <button class="btn btn-success">Create Moneybox</button>
     </form>
 
-    <ul class="list-group mt-3">
-      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>
-    </ul>
+    <div class="list-group mt-3">
+      <router-link
+          tag="a"
+          v-for="box of moneyboxes"
+          :key="box.id"
+          :to="'/moneyboxes/' + box.id"
+          class="list-group-item list-group-item-action"
+      >
+        {{ box.attributes.name }}
+
+      </router-link>
+<!--      <li class="list-group-item" v-for="box of moneyboxes" :key="box.id">{{ box.attributes.name }}</li>-->
+    </div>
   </div>
 </template>
 
