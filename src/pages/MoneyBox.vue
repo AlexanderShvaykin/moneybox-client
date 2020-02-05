@@ -96,7 +96,7 @@
       if (goal) {
         return [
           {value: goal.attributes.monthNumber},
-          {value: goal.attributes.paymentAmount, editable: true, key: "paymentAmount"},
+          {value: goal.attributes.paymentAmount},
           {value: goal.attributes.incomeAmount, editable: true, key: "incomeAmount"},
           {value: this.timeFormat(goal.attributes.startedAt)},
           {value: this.timeFormat(goal.attributes.finishedAt)}
@@ -111,7 +111,7 @@
       if (isNaN(result)) {
         return  ""
       } else {
-        return this.$d(new Date(), 'short')
+        return this.$d(new Date(value), 'short')
       }
     }
 
