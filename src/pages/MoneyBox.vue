@@ -177,5 +177,9 @@
 </script>
 
 <style scoped>
+  h5 {
+    background-color: var(--header-color);
+    text-transform: uppercase;
+  }
 
 </style>
