@@ -44,4 +44,5 @@
 
 <style>
   @import '~bootstrap/dist/css/bootstrap.css';
+  @import "assets/styles/variables.css";
 </style>
