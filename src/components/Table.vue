@@ -1,14 +1,23 @@
 <template>
   <table cellpadding="0" cellspacing="0">
+    <thead>
+      <tr v-if="headers">
+        <th
+          scope="col"
+          v-for="(head, index) in headers"
+          :key="index"
+        >{{ head }}</th>
+      </tr>
+    </thead>
     <slot></slot>
   </table>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
   @Component
   export default class Table extends Vue {
-
+    @Prop() private headers!: string[];
   }
 </script>
 

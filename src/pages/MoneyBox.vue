@@ -5,16 +5,11 @@
       <div class="col-1"></div>
       <div class="col-10">
         <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
-        <table is="Table" class="mt-3">
-          <thead>
-            <tr>
-              <th scope="col">{{$t('goal.month')}}</th>
-              <th scope="col">{{$t('goal.paymentAmount')}}</th>
-              <th scope="col">{{$t('goal.incomeAmount')}}</th>
-              <th scope="col">{{$t('goal.startedAt')}}</th>
-              <th scope="col">{{$t('goal.finishedAt')}}</th>
-            </tr>
-          </thead>
+        <table 
+          is="Table"
+          class="mt-3"
+          :headers="[$t('goal.month'), $t('goal.paymentAmount'), $t('goal.incomeAmount'), $t('goal.startedAt'), $t('goal.finishedAt')]"
+        >
           <tbody v-if="goals.length > 0">
             <tr
                 is="TableRow"
