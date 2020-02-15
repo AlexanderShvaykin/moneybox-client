@@ -129,8 +129,7 @@
     }
 
     loadGoals(url: string): void {
-      // TODO: need get full url or get correct path
-      this.$http.get(url.slice(1))
+      this.$http.get(url)
         .then(response => {
           response.json().then((resp: { data: FinanceGoal[] }) => {
             this.goals = resp.data;
