@@ -8,7 +8,16 @@
           @input="debounceEmit(column.key, $event.target.value)"
       >
     </td>
-    <slot name="actions"></slot>
+    <slot name="actions">
+      <td>
+        <button
+            @click="$emit('goto')"
+            class="btn btn-outline-primary btn-sm ml-1 mr-1"
+        >
+          <Icon name="arrow-right"></Icon>
+        </button>
+      </td>
+    </slot>
     <slot name="remove">
       <td>
         <button

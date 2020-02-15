@@ -16,17 +16,10 @@
             v-for="box of moneyboxes"
             :key="box.id"
             @remove="removeBox(box.id)"
+            @goto="toBox(box.id)"
             @changeRow="updateBox($event, box.id)"
             :columns="[{value: box.attributes.name, editable: true, key: 'name'}]"
         >
-          <td slot="actions">
-            <button
-                @click="toBox(box.id)"
-                class="btn btn-outline-primary btn-sm ml-1 mr-1"
-            >
-              <Icon name="arrow-right"></Icon>
-            </button>
-          </td>
         </div>
       </table>
     </div>
