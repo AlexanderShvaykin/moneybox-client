@@ -1,43 +1,45 @@
 <template>
-  <div v-if="loaded">
-    <button class="btn btn-light" @click="$router.go(-1)">{{ $t('app.back') }}</button>
-    <div class="row">
-      <div class="col-1"></div>
-      <div class="col-10">
-        <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
-        <table 
-          is="Table"
-          class="mt-3"
-          :headers="[$t('goal.month'), $t('goal.paymentAmount'), $t('goal.incomeAmount'), $t('goal.startedAt'), $t('goal.finishedAt')]"
-        >
-          <tbody v-if="goals.length > 0">
-            <tr
-                is="TableRow"
-                v-for="(goal, index) in goals"
-                :key="goal.id"
-                :columns="goalColumns(goal)"
-                @remove="removeGoal(goal.id, index)"
-                @changeRow="updateGoal($event, goal.id)"
-            >
-            </tr>
-          </tbody>
-        </table>
-        <button class="btn btn-primary mt-3 float-right" @click="toggleForm()">
-          <Icon name="plus"></Icon>
-        </button>
+  <div is="Nav">
+    <div v-if="loaded">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
+          <table 
+            is="Table"
+            class="mt-3"
+            :headers="[$t('goal.month'), $t('goal.paymentAmount'), $t('goal.incomeAmount'), $t('goal.startedAt'), $t('goal.finishedAt')]"
+          >
+            <tbody v-if="goals.length > 0">
+              <tr
+                  is="TableRow"
+                  v-for="(goal, index) in goals"
+                  :key="goal.id"
+                  :columns="goalColumns(goal)"
+                  @remove="removeGoal(goal.id, index)"
+                  @goto="openGoal(goal.id)"
+                  @changeRow="updateGoal($event, goal.id)"
+              >
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary mt-3 float-right" @click="toggleForm()">
+            <Icon name="plus"></Icon>
+          </button>
+        </div>
+        <div class="col-1"></div>
       </div>
-      <div class="col-1"></div>
+      <ModalForm
+          v-if="displayForm"
+          v-on:closeForm="displayForm = false"
+          :haveCloseForm="true"
+          title="Title"
+          v-on:onSubmit="createGoal()"
+      >
+        <DateInput v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
+        <DateInput v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
+      </ModalForm>
     </div>
-    <ModalForm
-        v-if="displayForm"
-        v-on:closeForm="displayForm = false"
-        :haveCloseForm="true"
-        title="Title"
-        v-on:onSubmit="createGoal()"
-    >
-      <DateInput v-model="startedAt" cssClass="form-control" elId="startedAt" label="started At"/>
-      <DateInput v-model="finishedAt" cssClass="form-control" elId="finishedAt" label="finished At" day="31"/>
-    </ModalForm>
   </div>
 </template>
 
@@ -52,6 +54,7 @@
   import Table from "@/components/Table.vue";
   import TableRow from "@/components/TableRow.vue";
   import Icon from "@/components/Icon.vue";
+  import Nav from "@/components/Nav.vue";
 
   @Component({
     components: {
@@ -59,7 +62,8 @@
       ModalForm,
       TableRow,
       Table,
-      Icon
+      Icon,
+      Nav
     },
     data() {
       return {
@@ -79,6 +83,10 @@
     displayForm: Boolean = false;
     startedAt: string = "";
     finishedAt: string = "";
+
+    openGoal(id: Number): void {
+      this.$router.push("/goals/" + id)
+    }
 
     updateGoal(changes: {key: string, value: string}, id: number): void {
       let goal = this.goals.find(e => e.id === id);
