@@ -13,11 +13,11 @@
   import { Component, Mixins } from 'vue-property-decorator';
   import Authorized from "@/mixins/authorized";
   import Nav from "@/components/Nav.vue";
-  import ModalForm from "@/components/ModalForm.vue";
   import Table from "@/components/Table.vue";
   import TableRow from "@/components/TableRow.vue";
   import Expense from "@/interfaces/expense";
   import Resources from "@/resouces";
+  import FinanceGoal from "@/interfaces/financeGoal";
 
   @Component({
     components: {
@@ -33,8 +33,32 @@
   })
 
   export default class GoalPage extends Mixins(Authorized, Resources) {
-    planedExpenses!: Expense[]
+    goal!: FinanceGoal;
+    planedExpenses!: Expense[];
 
+    loadData(): void {
+      console.log("loadData");
+      this.goalResource.get({id: this.$router.currentRoute.params['id']})
+        .then((response) => {
+        response.json().then((body: { data: FinanceGoal }) => {
+          this.goal = body.data;
+          this.loadExpenses()
+        })
+      }, this.errorHandler)
+    }
+
+    loadExpenses(): void {
+      this.$http.get(this.goal.relationships.planedExpenses.links.related).then(response => {
+        response.json().then((body: {data: Expense[]}) => {
+          this.planedExpenses = body.data
+        })
+      })
+    }
+
+    // noinspection JSUnusedGlobalSymbols
+    mounted() {
+      this.loadData()
+    }
   }
 </script>
 

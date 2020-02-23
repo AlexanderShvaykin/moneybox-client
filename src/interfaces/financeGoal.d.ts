@@ -6,5 +6,12 @@ export default interface FinanceGoal {
     startedAt: string,
     finishedAt: string,
     monthNumber: number
+  },
+  relationships: {
+    planedExpenses: {
+      links: {
+        related: string
+      }
+    }
   }
 }
