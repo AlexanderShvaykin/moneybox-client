@@ -31,9 +31,5 @@ export default class Authorized extends Mixins(WithCurrentUser) {
 
   created(): void {
     if (this.requireAuth) this.getMe();
-    this.registerResource();
-  }
-
-  registerResource(): void {
   }
 }

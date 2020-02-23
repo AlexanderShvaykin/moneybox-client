@@ -28,12 +28,12 @@
 
 <script lang="ts">
   import { Component, Mixins } from 'vue-property-decorator';
-  import { ResourceMethods } from 'vue-resource/types/vue_resource';
   import Authorized from "@/mixins/authorized";
   import Icon from "@/components/Icon.vue";
   import Table from "@/components/Table.vue";
   import TableRow from "@/components/TableRow.vue"
   import Box from "@/interfaces/moneyBox";
+  import Resources from "@/resouces";
 
   @Component({
     components: {
@@ -43,19 +43,18 @@
     }
   })
 
-  export default class MoneyBoxesPage extends Mixins(Authorized) {
+  export default class MoneyBoxesPage extends Mixins(Authorized, Resources) {
     moneyboxes: Box[] = [];
     private boxName: string = '';
-    private resource!: ResourceMethods;
     createMoneybox(): void {
       const box = { name: this.boxName };
-      this.resource.save({}, box).then(
+      this.moneyboxResource.save({}, box).then(
         response => response.json().then(this.addBoxHandler), this.errorHandler
       )
     }
 
     loadMoneyboxes(): void {
-      this.resource.get()
+      this.moneyboxResource.get()
         .then(response => {
           response.json().then((resp: { data: Box[] }) => this.moneyboxes = resp["data"])
         }, this.errorHandler)
@@ -66,10 +65,6 @@
       this.moneyboxes.push(response["data"]);
     }
 
-    registerResource(): void {
-      this.resource = this.$resource("api/moneyboxes{/id}");
-    }
-
     toBox(id: number): void {
       this.$router.push("/moneyboxes/" + id)
     }
@@ -78,14 +73,14 @@
       let box = this.moneyboxes.find(e => e.id === id);
       if (box) {
         this.$set(box.attributes, changes.key, changes.value);
-        this.resource.update(
+        this.moneyboxResource.update(
           {id: id}, box.attributes
         ).then(() => {}, this.errorHandler)
       }
     }
 
     removeBox(id: number): void {
-      this.resource.delete({id: id}).then(() => {
+      this.moneyboxResource.delete({id: id}).then(() => {
         this.loadMoneyboxes()
       }, this.errorHandler)
     }
