@@ -5,7 +5,7 @@
         <div class="col-1"></div>
         <div class="col-10">
           <h5 class="mt-1 text-center card-header">{{ box.attributes.name }}</h5>
-          <table 
+          <table
             is="Table"
             class="mt-3"
             :headers="[$t('goal.month'), $t('goal.paymentAmount'), $t('goal.incomeAmount'), $t('goal.startedAt'), $t('goal.finishedAt')]"
@@ -45,7 +45,6 @@
 
 <script lang="ts">
   import { Component, Mixins } from 'vue-property-decorator';
-  import { ResourceMethods } from 'vue-resource/types/vue_resource';
   import Authorized from "@/mixins/authorized";
   import Box from "@/interfaces/moneyBox";
   import FinanceGoal from "@/interfaces/financeGoal";
@@ -55,6 +54,7 @@
   import TableRow from "@/components/TableRow.vue";
   import Icon from "@/components/Icon.vue";
   import Nav from "@/components/Nav.vue";
+  import Resources from "@/resouces";
 
   @Component({
     components: {
@@ -72,11 +72,8 @@
     }
   })
 
-  export default class MoneyBoxPage extends Mixins(Authorized) {
-    private moneyboxResource!: ResourceMethods;
-    private goalResource!: ResourceMethods;
+  export default class MoneyBoxPage extends Mixins(Authorized, Resources) {
     private boxId!: string;
-    private svg!: object;
     box!: Box;
     goals!: FinanceGoal[];
     loaded: Boolean = false;
@@ -161,13 +158,6 @@
           this.toggleForm(false)
         })
       }, this.errorHandler)
-    }
-
-    registerResource(): void {
-      this.moneyboxResource = this.$resource("api/moneyboxes{/id}", {}, {
-        createGoal: { method: 'POST', url: "api/moneyboxes{/id}/finance_goals"}
-      });
-      this.goalResource = this.$resource("api/finance_goals{/id}");
     }
 
     mounted(): void {
