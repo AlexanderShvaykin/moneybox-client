@@ -25,6 +25,8 @@ export default class Authorized extends Mixins(WithCurrentUser) {
       response.json().then((body: {errors: {title: string}[]}) => {
         const errors = body.errors.map(value => value.title);
         this.$store.commit('addErrors', errors);
+      }, () => {
+        console.error("Undefended server error!")
       })
     }
   }
