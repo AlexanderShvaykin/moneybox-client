@@ -1,7 +1,10 @@
 <template>
   <div is="Nav">
+    <div class="badge badge-primary" v-if="financeGoal()">
+      {{ $d(new Date(goal.attributes.startedAt), 'month') }}
+    </div>
     <div class="row">
-      <div class="col-7">
+      <div class="col-lg-7">
         <table
             is="Table"
             class="mt-3"
@@ -23,12 +26,12 @@
           <Icon name="plus"></Icon>
         </button>
       </div>
-      <div class="col-5" v-if="financeGoal()">
+      <div class="col-lg-5" v-if="financeGoal()">
         <table
             is="Table"
             class="mt-3"
         >
-          <tbody v-if="planedExpenses.length > 0">
+          <tbody>
           <tr
               is="TableRow"
               :columns="[{value: $i18n.t('goal.paymentAmount')}, {value: goal.attributes.paymentAmount}]"
@@ -42,6 +45,13 @@
               :remove_btn="false"
               :action_btn="false"
               @changeRow="updateGoal($event)"
+          >
+          </tr>
+          <tr
+              is="TableRow"
+              :columns="[{value: 'Остаток'}, {value: freeSum}]"
+              :remove_btn="false"
+              :action_btn="false"
           >
           </tr>
           </tbody>
@@ -87,7 +97,14 @@
     data() {
       return {
         planedExpenses: [],
-        goal: undefined
+        goal: undefined,
+        freeSum: 0
+      }
+    },
+    watch: {
+      goal() {
+        // @ts-ignore
+        this.refreshFreeSum()
       }
     }
   })
@@ -95,13 +112,19 @@
   export default class GoalPage extends Mixins(Authorized, Resources) {
     goal!: FinanceGoal;
     planedExpenses!: Expense[];
+    freeSum!: number;
     expName: string = "";
     expAmount: number = 0;
     displayForm: boolean = false;
 
+    refreshFreeSum() {
+      this.freeSum = this.goal.attributes.incomeAmount - this.goal.attributes.paymentAmount
+    }
+
     updateGoal(changes: {key: string, value: string}) {
       const goal = this.goal;
       this.$set(goal.attributes, changes.key, changes.value);
+      this.refreshFreeSum();
       this.goalResource.update(
         {id: goal.id}, goal.attributes
       ).then(() => { }, this.errorHandler)

@@ -6,6 +6,7 @@
           :value="column.value"
           :disabled="!column.editable"
           @input="debounceEmit(column.key, $event.target.value)"
+          :class="column.value < 0 ? 'red' : ''"
       >
     </td>
     <slot name="actions" v-if="action_btn !== false">
@@ -57,6 +58,10 @@
 </script>
 
 <style scoped>
+  input.red {
+    color: red !important
+  }
+
   td input {
     border:none;
     width:100%;
