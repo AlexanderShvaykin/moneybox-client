@@ -11,14 +11,19 @@
               is="TableRow"
               v-for="(expense) in planedExpenses"
               :key="expense.id"
-              :columns="[{value: expense.attributes.name}, {value: expense.attributes.amount}]"
+              :columns="[{value: expense.attributes.name, editable: true, key: 'name'}, {value: expense.attributes.amount, editable: true, key: 'amount'}]"
+              @changeRow="updateExpense($event, expense)"
           >
+            <div slot="actions"></div>
           </tr>
           </tbody>
         </table>
         <button class="btn btn-primary mt-3 float-right" @click="toggleForm()">
           <Icon name="plus"></Icon>
         </button>
+      </div>
+      <div class="col-6" v-if="financeGoal()">
+        Расходов всего: {{goal.attributes.paymentAmount}}
       </div>
     </div>
     <ModalForm
@@ -59,7 +64,8 @@
     },
     data() {
       return {
-        planedExpenses: []
+        planedExpenses: [],
+        goal: undefined
       }
     }
   })
@@ -71,6 +77,18 @@
     expAmount: number = 0;
     displayForm: boolean = false;
 
+    updateExpense(changes: {key: string, value: string}, expense: Expense): void {
+      console.log(expense.attributes, changes.key, changes.value)
+      this.$set(expense.attributes, changes.key, changes.value);
+      this.expenseRwsource.update(
+        {id: expense.id}, expense.attributes
+      ).then(() => { this.loadGoal() }, this.errorHandler)
+    }
+
+    financeGoal(): FinanceGoal | undefined {
+      return this.goal
+    }
+
     createExpense(): void {
       const params = { name: this.expName, amount: this.expAmount };
 
@@ -78,6 +96,9 @@
       this.goalResource.createExpense({id: this.goal.id}, params).then((response: Response) => {
         response.json().then((body: { data: Expense }) => {
           this.planedExpenses.push(body.data);
+          this.loadGoal();
+          this.expName = "";
+          this.expAmount = 0;
           this.toggleForm(false)
         })
       }, this.errorHandler)
@@ -85,6 +106,15 @@
 
     toggleForm(flag: boolean = true): void {
       this.displayForm = flag
+    }
+
+    loadGoal(): void {
+      this.goalResource.get({id: this.$router.currentRoute.params['id']})
+        .then((response) => {
+          response.json().then((body: { data: FinanceGoal }) => {
+            this.goal = body.data;
+          })
+        }, this.errorHandler)
     }
 
     loadData(): void {

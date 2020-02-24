@@ -10,4 +10,5 @@ export default class Resources extends Vue {
   moneyboxResource: ResourceMethods = this.$resource("api/moneyboxes{/id}", {}, {
     createGoal: { method: 'POST', url: "api/moneyboxes{/id}/finance_goals"}
   });
+  expenseRwsource: ResourceMethods = this.$resource("api/planed_expenses{/id}")
 }
