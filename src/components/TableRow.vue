@@ -8,7 +8,7 @@
           @input="debounceEmit(column.key, $event.target.value)"
       >
     </td>
-    <slot name="actions">
+    <slot name="actions" v-if="action_btn !== false">
       <td>
         <button
             @click="$emit('goto')"
@@ -18,7 +18,7 @@
         </button>
       </td>
     </slot>
-    <slot name="remove">
+    <slot name="remove" v-if="action_btn !== false">
       <td>
         <button
             @click="$emit('remove')"
@@ -44,6 +44,8 @@
   export default class TableRow extends Vue {
     @Prop() private columns!: {value: string, editable: boolean}[];
     @Prop() private customRemoveText!: string;
+    @Prop() private remove_btn!: boolean;
+    @Prop() private action_btn!: boolean;
     debounceEmit = Helper.debounce(this.emitValue, 1000);
 
     emitValue(key: string, value: string): void {

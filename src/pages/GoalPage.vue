@@ -24,7 +24,28 @@
         </button>
       </div>
       <div class="col-6" v-if="financeGoal()">
-        Расходов всего: {{goal.attributes.paymentAmount}}
+        <table
+            is="Table"
+            class="mt-3"
+        >
+          <tbody v-if="planedExpenses.length > 0">
+          <tr
+              is="TableRow"
+              :columns="[{value: 'Расходов всего'}, {value: goal.attributes.paymentAmount}]"
+              :remove_btn="false"
+              :action_btn="false"
+          >
+          </tr>
+          <tr
+              is="TableRow"
+              :columns="[{value: 'Поступлений всего'}, {value: goal.attributes.incomeAmount, editable: true, key: 'incomeAmount'}]"
+              :remove_btn="false"
+              :action_btn="false"
+              @changeRow="updateGoal($event)"
+          >
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <ModalForm
@@ -78,6 +99,14 @@
     expAmount: number = 0;
     displayForm: boolean = false;
 
+    updateGoal(changes: {key: string, value: string}) {
+      const goal = this.goal;
+      this.$set(goal.attributes, changes.key, changes.value);
+      this.goalResource.update(
+        {id: goal.id}, goal.attributes
+      ).then(() => { }, this.errorHandler)
+    }
+
     removeExpense(id: number, index: number) {
       this.expenseRwsource.delete({id: id}).then(() => {
         this.planedExpenses.splice(index, 1);
@@ -86,7 +115,6 @@
     }
 
     updateExpense(changes: {key: string, value: string}, expense: Expense): void {
-      console.log(expense.attributes, changes.key, changes.value)
       this.$set(expense.attributes, changes.key, changes.value);
       this.expenseRwsource.update(
         {id: expense.id}, expense.attributes
