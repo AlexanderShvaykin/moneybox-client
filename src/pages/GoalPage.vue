@@ -1,7 +1,7 @@
 <template>
   <div is="Nav">
     <div class="row">
-      <div class="col-6">
+      <div class="col-7">
         <table
             is="Table"
             class="mt-3"
@@ -11,7 +11,7 @@
               is="TableRow"
               v-for="(expense, index) in planedExpenses"
               :key="expense.id"
-              :columns="[{value: expense.attributes.name, editable: true, key: 'name'}, {value: expense.attributes.amount, editable: true, key: 'amount'}]"
+              :columns="[{value: expense.attributes.name, editable: true, key: 'name'}, {value: expense.attributes.amount, editable: true, key: 'amount', style: 'width: 100px'}]"
               @changeRow="updateExpense($event, expense)"
               @remove="removeExpense(expense.id, index)"
           >
@@ -23,7 +23,7 @@
           <Icon name="plus"></Icon>
         </button>
       </div>
-      <div class="col-6" v-if="financeGoal()">
+      <div class="col-5" v-if="financeGoal()">
         <table
             is="Table"
             class="mt-3"
@@ -31,14 +31,14 @@
           <tbody v-if="planedExpenses.length > 0">
           <tr
               is="TableRow"
-              :columns="[{value: 'Расходов всего'}, {value: goal.attributes.paymentAmount}]"
+              :columns="[{value: $i18n.t('goal.paymentAmount')}, {value: goal.attributes.paymentAmount}]"
               :remove_btn="false"
               :action_btn="false"
           >
           </tr>
           <tr
               is="TableRow"
-              :columns="[{value: 'Поступлений всего'}, {value: goal.attributes.incomeAmount, editable: true, key: 'incomeAmount'}]"
+              :columns="[{value: $i18n.t('goal.incomeAmount')}, {value: goal.attributes.incomeAmount, editable: true, key: 'incomeAmount', style: 'width: 100px'}]"
               :remove_btn="false"
               :action_btn="false"
               @changeRow="updateGoal($event)"
@@ -56,9 +56,9 @@
         v-on:onSubmit="createExpense()"
     >
 
-      <label for="expName">Имя</label>
+      <label for="expName">{{$i18n.t('app.title')}}</label>
       <input type="text" v-model="expName" id="expName" class="form-control">
-      <label for="expAmount">Сумма</label>
+      <label for="expAmount">{{$i18n.t('app.sum')}}</label>
       <input type="number" v-model="expAmount" id="expAmount" class="form-control">
     </ModalForm>
   </div>

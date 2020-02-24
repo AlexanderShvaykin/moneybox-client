@@ -1,6 +1,6 @@
 <template>
   <tr v-if="columns.length > 0">
-    <td v-for="(column, index) in columns" :key="index">
+    <td v-for="(column, index) in columns" :key="index" :style="column.style">
       <input
           type="text"
           :value="column.value"
@@ -19,7 +19,7 @@
       </td>
     </slot>
     <slot name="remove" v-if="action_btn !== false">
-      <td>
+      <td style="width: 50px">
         <button
             @click="$emit('remove')"
             class="btn btn-outline-danger btn-sm ml-1 mr-1"
@@ -42,7 +42,7 @@
     }
   })
   export default class TableRow extends Vue {
-    @Prop() private columns!: {value: string, editable: boolean}[];
+    @Prop() private columns!: {value: string, editable: boolean, style: string}[];
     @Prop() private customRemoveText!: string;
     @Prop() private remove_btn!: boolean;
     @Prop() private action_btn!: boolean;

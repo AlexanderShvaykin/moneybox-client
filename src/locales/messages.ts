@@ -2,7 +2,9 @@ export default {
   'ru': {
     app: {
       logout: "Выход",
-      back: "Назад"
+      back: "Назад",
+      title: "Заголовок",
+      sum: "Сумма"
     },
     message: {
       hello: 'Привет {email}'
