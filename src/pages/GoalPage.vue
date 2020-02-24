@@ -9,10 +9,11 @@
           <tbody v-if="planedExpenses.length > 0">
           <tr
               is="TableRow"
-              v-for="(expense) in planedExpenses"
+              v-for="(expense, index) in planedExpenses"
               :key="expense.id"
               :columns="[{value: expense.attributes.name, editable: true, key: 'name'}, {value: expense.attributes.amount, editable: true, key: 'amount'}]"
               @changeRow="updateExpense($event, expense)"
+              @remove="removeExpense(expense.id, index)"
           >
             <div slot="actions"></div>
           </tr>
@@ -76,6 +77,13 @@
     expName: string = "";
     expAmount: number = 0;
     displayForm: boolean = false;
+
+    removeExpense(id: number, index: number) {
+      this.expenseRwsource.delete({id: id}).then(() => {
+        this.planedExpenses.splice(index, 1);
+        this.loadGoal()
+      })
+    }
 
     updateExpense(changes: {key: string, value: string}, expense: Expense): void {
       console.log(expense.attributes, changes.key, changes.value)
